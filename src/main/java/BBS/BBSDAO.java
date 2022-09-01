@@ -15,6 +15,7 @@ public class BBSDAO {
     PreparedStatement ps=null;
     ResultSet rs=null;
 
+
     public String getDate(){
 
         String SQL="SELECT NOW()";
@@ -48,6 +49,7 @@ public class BBSDAO {
         int insertCount=0;
 
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(dburl, dbID, dbpassword);//나으 데이터베이스에 접근
             String sql = "INSERT INTO BBS VALUES (?,?,?,?)";
             ps = conn.prepareStatement(sql);
@@ -64,21 +66,31 @@ public class BBSDAO {
         return insertCount;
     }
 
-    public List<BBS> getUser() {
+    public List<BBS> getUsers(){
         List<BBS> list = new ArrayList<>();
-        String SQL="SELECT * FROM bbs";
+
         try {
-            PreparedStatement pstmt =conn.prepareStatement(SQL);
-            while (rs.next()){
-                int id=rs.getInt(1);
-                String name=rs.getString(2);
-                String title=rs.getString(3);
-                String Date=rs.getString(4);
-                BBS bbs=new BBS(id,name,title,Date);
-                list.add(bbs);
-            }
-        }catch (Exception e){
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            //클래스를 찾을수 없을때 예외 처리
             e.printStackTrace();
+        }
+        String sql="SELECT * FROM bbs";
+        try (Connection conn =DriverManager.getConnection(dburl,dbID,dbpassword);
+             PreparedStatement ps=conn.prepareStatement(sql)){
+            try (ResultSet rs=ps.executeQuery(sql)){
+                while (rs.next()){
+                    int id=rs.getInt(1);
+                    String name=rs.getString(2);
+                    String title=rs.getString(3);
+                    String Date=rs.getString(4);
+                    BBS bbs=new BBS(id,name,title,Date);
+                    list.add(bbs);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }}catch (Exception ex){
+            ex.printStackTrace();
         }
         return list;
     }

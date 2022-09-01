@@ -16,27 +16,39 @@
             width: 200px;
             height: 120px;
         }
+        .main{
+            text-align: center;
+            width: 60%;
+            margin: auto;
+            border: 1px solid black;
+        }
     </style>
 </head>
 <body>
 <%
     BBSDAO bbsdao=new BBSDAO();
-    List<BBS> list =bbsdao.getUser();
+    List<BBS> list =bbsdao.getUsers();
     for (int i=0; i< list.size(); i++) {
 
 
 %>
-<%= list.get(i).getId()%>
-<%= list.get(i).getName()%>
-<%= list.get(i).getTitle()%>
-<%= list.get(i).getDate()%>
+<div class="main">
+    ID:<%= list.get(i).getId()%>
+    <br>
+    Name:<%= list.get(i).getName()%>
+    <br>
+    Title:<%= list.get(i).getTitle()%>
+    <br>
+    Date:<%= list.get(i).getDate()%>
+    <br>
+</div>
 <%
     }
 %>
-<form>
-이름:<input type="text" name="name">
+<form action="addAction.jsp">
+이름:<input type="text" name="Name">
 <br>
-내용:<textarea name="text"></textarea>
+내용:<textarea name="Title"></textarea>
 <br>
 <button type="submit">제출</button>
 </form>
