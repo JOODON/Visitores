@@ -39,5 +39,6 @@
         script.println("</script>");
         script.close();
         return;
+        //방명록 만들기 끝 이제 스프링으로 넘어갑니다!
     }
 %>
